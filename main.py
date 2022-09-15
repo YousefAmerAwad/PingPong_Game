@@ -1,19 +1,55 @@
 import turtle
 import functions as funct
-
-wind = turtle.Screen()           #insert a window
-wind.title('Ping Pong')          #name the game
-wind.bgcolor('black')            #provide color to the screen
-wind.setup(height=500,width=500) #size of the game pannel
-wind.tracer(0)                   #stop the window from updation automatically
-
-funct.insert_racket('racket1','blue',-210,0)    #insert the first racket
-funct.insert_racket('racket2','red',210,0)      #insert the second racket
-funct.insert_ball('ball','white')               #insert the ball
+import inserts
+import move
 
 
+inserts.wind.listen()                               #tell the window to expect a keyboard input
+inserts.wind.onkeypress(move.racket1_up,'w')        #move racket1 up while pressing 'w'
+inserts.wind.onkeypress(move.racket1_down,'s')      #move racket1 down while pressing 'w'
+inserts.wind.onkeypress(move.racket2_up,'Up')       #move racket2 up while pressing 'Up'
+inserts.wind.onkeypress(move.racket2_down,'Down')   #move racket1 down while pressing 'Down'
+
+
+
+dx = 0.1       #the change in x-axis
+dy = 0.05
 #Main Game Loop
 while True:
-    wind.update()   #update the screen
+    inserts.wind.update()   #update the screen
+    
+    inserts.ball.setx(inserts.ball.xcor() + dx)
+    inserts.ball.sety(inserts.ball.ycor() + dy)
+
+    #if the ball hit the top border 
+    if inserts.ball.ycor() > 240:
+        inserts.ball.sety(240)
+        dy *= -1
+
+    if inserts.ball.ycor() < -240:
+        inserts.ball.sety(-240)
+        dy *= -1
+
+    if inserts.ball.xcor() > 300:
+        inserts.ball.goto(0,0)
+        dx *= -1
+
+    if inserts.ball.xcor() < -300:
+        inserts.ball.goto(0,0)
+        dx *= -1
+
+    if inserts.racket1.ycor() > 210:
+        inserts.racket1.sety(210)
+
+    if inserts.racket2.ycor() > 210:
+        inserts.racket2.sety(210)
+
+    if inserts.racket2.ycor() < -210:
+        inserts.racket2.sety(-210)
+
+    if inserts.racket1.ycor() < -210:
+        inserts.racket1.sety(-210)
 
 
+
+    
